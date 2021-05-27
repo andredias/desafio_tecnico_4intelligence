@@ -15,4 +15,4 @@ format_code:
 test_only:
 	pytest -svx
 
-test: lint build test_only
+test: lint test_only
