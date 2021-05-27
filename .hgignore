@@ -1,0 +1,32 @@
+syntax: glob
+
+.venv
+.env
+*~
+*.py[cod]
+*.orig
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Unit test / coverage reports
+.coverage
+.tox
+htmlcov/
+
+# cache
+__pycache__
+.mypy_cache
+.pytest_cache
