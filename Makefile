@@ -1,3 +1,7 @@
+run:
+	hypercorn --reload --config=hypercorn.toml 'app.main:app'
+
+
 lint:
 	@echo
 	isort --diff -c --skip-glob '*.venv' .
