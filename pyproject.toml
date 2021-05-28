@@ -34,6 +34,8 @@ isort = "*"
 mypy = "*"
 pep8-naming = "*"
 pytest = "*"
+pytest-faker = "^2.0.0"
+pytest-cov = "^2.12.0"
 
 [tool.isort]
 multi_line_output = 3

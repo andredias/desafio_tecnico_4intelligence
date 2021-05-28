@@ -13,6 +13,7 @@ format_code:
 	blue .
 
 test_only:
-	pytest -svx
+	pytest -svx --cov-report term-missing --cov-report html --cov-branch \
+			--cov app/
 
 test: lint test_only
