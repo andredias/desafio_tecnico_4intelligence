@@ -6,7 +6,7 @@ lint:
 	@echo
 	flake8 .
 	@echo
-	mypy .
+	mypy --ignore-missing-imports .
 
 format_code:
 	isort .
