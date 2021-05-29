@@ -1,5 +1,10 @@
 run:
-	hypercorn --reload --config=hypercorn.toml 'app.main:app'
+	@ echo 'Starting PostgreSQL...'; \
+	docker run -d --rm -p 5432:5432 -e POSTGRES_DB=4intelligence \
+		-e POSTGRES_PASSWORD=development_1234 --name postgres-development \
+		postgres:alpine
+	@ trap 'echo "Stopping postgres..."; docker stop postgres-development' INT; \
+	ENV=development hypercorn --reload --config=hypercorn.toml 'app.main:app'
 
 
 lint:
@@ -12,12 +17,15 @@ lint:
 	@echo
 	mypy --ignore-missing-imports .
 
+
 format_code:
 	isort .
 	blue .
 
+
 test_only:
 	pytest -svx --cov-report term-missing --cov-report html --cov-branch \
 			--cov app/
+
 
 test: lint test_only
