@@ -36,3 +36,7 @@ start_postgres:
 			-e POSTGRES_PASSWORD=development_1234 --name postgres-development \
 			postgres:alpine; \
 	fi
+
+
+run_in_docker:
+	docker-compose up

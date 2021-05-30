@@ -1,0 +1,25 @@
+version: "3.5"
+
+services:
+
+    postgres:
+        container_name: postgres
+        image: postgres:alpine
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: 4intelligence
+            POSTGRES_PASSWORD: development_1234
+
+    app:
+        container_name: 4intelligence
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8000:8000"
+        environment:
+            ENV: development
+            DB_HOST: postgres
+        depends_on:
+            - postgres
