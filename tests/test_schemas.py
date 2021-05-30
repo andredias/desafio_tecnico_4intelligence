@@ -1,6 +1,6 @@
 from pytest import raises
 
-from app.models import valida_cep, valida_cpf, valida_uf
+from app.schemas import valida_cep, valida_cpf, valida_uf
 from app.utils import remove_symbols
 
 

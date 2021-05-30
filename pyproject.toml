@@ -9,16 +9,15 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.dependencies]
-python = "^3.9"
-fastapi = "*"
-loguru = "*"
-Hypercorn = "*"
-uvloop = "*"
-orjson = "*"
-databases = "*"
 asyncpg = "*"
-passlib = { extras = ["argon2"], version = "*" }
-alembic = "*"
+databases = "*"
+fastapi = "*"
+Hypercorn = "*"
+loguru = "*"
+python = "^3.9"
+uvloop = "*"
+tenacity = "*"
+psycopg2 = "*"
 
 
 [tool.poetry.dev-dependencies]
@@ -34,8 +33,8 @@ isort = "*"
 mypy = "*"
 pep8-naming = "*"
 pytest = "*"
-pytest-faker = "^2.0.0"
-pytest-cov = "^2.12.0"
+pytest-cov = "*"
+Faker = "*"
 
 [tool.isort]
 multi_line_output = 3

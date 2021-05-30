@@ -1,11 +1,9 @@
-from typing import Iterator
-
 from faker import Faker
 from httpx import AsyncClient
 from pydantic import parse_obj_as
 from pytest import fixture
 
-from app.models import User, UserIn
+from app.schemas import User, UserIn
 
 fake = Faker(['pt_BR'])
 SEED = 1
@@ -26,15 +24,16 @@ def fake_user() -> User:
 
 
 @fixture
-def users() -> Iterator[list[User]]:
-    from app.routers import user as router
+async def users(app) -> list[User]:
+    from app.models.user import insert
 
     Faker.seed(SEED)
+    result = []
     for _ in range(NUM_RECORDS):
         user = fake_user()
-        router.users[user.cpf] = user
-    yield [v for v in router.users.values()]
-    router.users.clear()
+        await insert(user)
+        result.append(user)
+    return result
 
 
 async def test_get_users(users: list[User], client: AsyncClient) -> None:

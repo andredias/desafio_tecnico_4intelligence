@@ -1,8 +1,6 @@
-run:
-	@ echo 'Starting PostgreSQL...'; \
-	docker run -d --rm -p 5432:5432 -e POSTGRES_DB=4intelligence \
-		-e POSTGRES_PASSWORD=development_1234 --name postgres-development \
-		postgres:alpine
+POSTGRESQL_RUNNING = $(shell docker ps | grep postgres-development)
+
+run: start_postgres
 	@ trap 'echo "Stopping postgres..."; docker stop postgres-development' INT; \
 	ENV=development hypercorn --reload --config=hypercorn.toml 'app.main:app'
 
@@ -29,3 +27,12 @@ test_only:
 
 
 test: lint test_only
+
+
+start_postgres:
+	@ if [ -z "$(POSTGRESQL_RUNNING)" ]; then \
+		echo 'Starting PostgreSQL...'; \
+		docker run -d --rm -p 5432:5432 -e POSTGRES_DB=4intelligence \
+			-e POSTGRES_PASSWORD=development_1234 --name postgres-development \
+			postgres:alpine; \
+	fi

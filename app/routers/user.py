@@ -1,45 +1,48 @@
 from fastapi import APIRouter, HTTPException
 from loguru import logger
 
-from ..models import User, UserIn
+from ..models.user import delete, get_all, get_user, insert, update
+from ..schemas import User, UserIn
 
 router = APIRouter()
-users: dict[str, User] = {}
 
 
 @router.get('/users', response_model=list[User])
 async def get_users():
-    logger.debug(users)
-    return [u for u in users.values()]
+    result = await get_all()
+    logger.debug(result)
+    return result
 
 
 @router.get('/users/{cpf}', response_model=User)
-async def get_user(cpf: str):
-    if cpf not in users:
+async def get_one_user(cpf: str):
+    user = await get_user(cpf)
+    if not user:
         raise HTTPException(404)
-    return users[cpf]
+    return user
 
 
 @router.post('/users', status_code=201)
 async def include_user(user: User):
     logger.debug(user)
-    users[user.cpf] = user
+    await insert(user)
     return
 
 
 @router.put('/users', status_code=204)
 async def update_user(user: UserIn):
-    logger.debug(user.dict(exclude_unset=True))
-    if user.cpf not in users:
+    logger.debug(user)
+    old_user = await get_user(user.cpf)
+    if not old_user:
         raise HTTPException(404)
-    data = user.dict(exclude_unset=True, exclude_none=True)
-    users[user.cpf] = users[user.cpf].copy(update=data)
+    await update(user)
     return
 
 
 @router.delete('/users/{cpf}', status_code=204)
 async def delete_user(cpf: str):
-    if cpf not in users:
+    user = await get_user(cpf)
+    if not user:
         raise HTTPException(404)
-    del users[cpf]
+    await delete(cpf)
     return

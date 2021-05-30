@@ -6,3 +6,11 @@ if ENV not in ('production', 'development', 'testing'):
 DEBUG = ENV != 'production'
 TESTING = ENV == 'testing'
 LOG_LEVEL = os.getenv('LOG_LEVEL') or DEBUG and 'DEBUG' or 'INFO'
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'development_1234')
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_PORT = os.getenv('DB_PORT') or TESTING and '5431' or '5432'
+DB_NAME = os.getenv('DB_NAME', '4intelligence')
+DATABASE_URL = (
+    os.getenv('DATABASE_URL')
+    or f'postgresql://postgres:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+)
